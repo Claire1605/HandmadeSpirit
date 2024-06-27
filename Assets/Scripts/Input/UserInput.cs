@@ -11,17 +11,12 @@ public class UserInput : MonoBehaviour
     public bool InteractJustPressed { get; private set;}
     public bool InteractBeingHeld { get; private set; }
     public bool InteractReleased { get; private set; }
-    public bool PauseInput { get; private set; }
-    public bool DebugInput { get; private set; }
     public bool MouseClick { get; private set; }
 
     private PlayerInput _playerInput;
 
     private InputAction _navigationAction;
     private InputAction _interactAction;
-    private InputAction _pauseAction;
-    private InputAction _debugAction;
-    private InputAction _mouseClickAction;
 
     //Input Manager
     public static bool isPaused = false;
@@ -51,9 +46,6 @@ public class UserInput : MonoBehaviour
     {
         _navigationAction = _playerInput.actions["MOVEMENT"];
         _interactAction = _playerInput.actions["INTERACT"];
-        _pauseAction = _playerInput.actions["PAUSE"];
-        _debugAction = _playerInput.actions["DEBUG"];
-        _mouseClickAction = _playerInput.actions["MOUSE_CLICK"];
     }
 
     private void UpdateInputs()
@@ -62,8 +54,6 @@ public class UserInput : MonoBehaviour
         InteractJustPressed = _interactAction.WasPressedThisFrame();
         InteractBeingHeld = _interactAction.IsPressed();
         InteractReleased = _interactAction.WasReleasedThisFrame();
-        PauseInput = _pauseAction.WasPressedThisFrame();
-        DebugInput = _debugAction.WasPressedThisFrame();
-        MouseClick = _mouseClickAction.IsPressed();
+        MouseClick = Mouse.current.leftButton.wasPressedThisFrame;
     }
 }
