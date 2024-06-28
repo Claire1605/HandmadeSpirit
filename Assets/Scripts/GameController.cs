@@ -71,7 +71,7 @@ public class GameController : MonoBehaviour
             {
                 if (UserInput.Instance.NavigationInput.x < 0 ||
                     UserInput.Instance.NavigationInput.y < 0 ||
-                    UserInput.Instance.NavigationInput.y < 0)
+                    UserInput.Instance.NavigationInput.x > 0)
                 {
                     forceTransition = true;
                 }
