@@ -34,7 +34,7 @@ public class GameController : MonoBehaviour
     private State curState = State.ShowingWelcome;
     private int questionAnswer = -1;
 
-    private float nextTransition = 5.0f;
+    private float nextTransition = float.MaxValue;
     private float blockInputUntil = float.MinValue;
 
     private int[] result = new int[QuestionHelper.NUMBER_OF_SPRITS];
@@ -65,31 +65,43 @@ public class GameController : MonoBehaviour
     private void Update()
     {
         bool forceTransition = false;
-        if (blockInputUntil < Time.time && curState == State.ShowingQuestion)
+        if (blockInputUntil < Time.time)
         {
-            // Left Arrow
-            if (UserInput.Instance.NavigationInput.x < 0)
+            if (curState == State.ShowingWelcome)
             {
-                questionAnswer = 0;
+                if (UserInput.Instance.NavigationInput.x < 0 ||
+                    UserInput.Instance.NavigationInput.y < 0 ||
+                    UserInput.Instance.NavigationInput.y < 0)
+                {
+                    forceTransition = true;
+                }
             }
-            // Up Arrow
-            else if (UserInput.Instance.NavigationInput.y > 0)
+            else if (curState == State.ShowingQuestion)
             {
-                questionAnswer = 1;
-            }
-            // Right Arrow
-            else if (UserInput.Instance.NavigationInput.x > 0)
-            {
-                questionAnswer = 2;
-            }
+                // Left Arrow
+                if (UserInput.Instance.NavigationInput.x < 0)
+                {
+                    questionAnswer = 0;
+                }
+                // Down Arrow
+                else if (UserInput.Instance.NavigationInput.y < 0)
+                {
+                    questionAnswer = 1;
+                }
+                // Right Arrow
+                else if (UserInput.Instance.NavigationInput.x > 0)
+                {
+                    questionAnswer = 2;
+                }
 
-            // If we have recieved an answer
-            if (questionAnswer != -1)
-            {
-                forceTransition = true;
-                UpdateResult();
-                Debug.Log(string.Join(", ", result));
-                selectionAudio.Play();
+                // If we have recieved an answer
+                if (questionAnswer != -1)
+                {
+                    forceTransition = true;
+                    UpdateResult();
+                    Debug.Log(string.Join(", ", result));
+                    selectionAudio.Play();
+                }
             }
         }
 
@@ -164,7 +176,7 @@ public class GameController : MonoBehaviour
             {
                 curState = State.ShowingAnswer;
                 questionDisplay.ShowAnswer(questionAnswer);
-                nextTransition = Time.time + 6;
+                nextTransition = Time.time + 4;
             }
             break;
 
