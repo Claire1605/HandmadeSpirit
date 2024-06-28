@@ -285,15 +285,7 @@ PrefabInstance:
       value: GameController
       objectReference: {fileID: 0}
     - target: {fileID: 8477026163705850792, guid: f33e728e8125449a48e719a7a4a25e22, type: 3}
-      propertyPath: slowReveal
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8477026163705850792, guid: f33e728e8125449a48e719a7a4a25e22, type: 3}
       propertyPath: displayRoot
-      value: 
-      objectReference: {fileID: 1361018874}
-    - target: {fileID: 8477026163705850792, guid: f33e728e8125449a48e719a7a4a25e22, type: 3}
-      propertyPath: questionRoot
       value: 
       objectReference: {fileID: 1361018874}
     - target: {fileID: 8477026163705850792, guid: f33e728e8125449a48e719a7a4a25e22, type: 3}

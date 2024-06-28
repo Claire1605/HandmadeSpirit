@@ -79,10 +79,10 @@ RectTransform:
   m_Father: {fileID: 920522400820447016}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.8}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6047573636018519225
 CanvasRenderer:
@@ -112,7 +112,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Welcome Message
+  m_text: 'You have found the ancient ruin and may now summon a demon to be your
+    servant
+
+
+    The ancient ritual will begin when you select one of the symbols
+    using the summoning stone
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: af76bf85c5594304d83612a51d125b90, type: 2}
   m_sharedMaterial: {fileID: 2554988385467168948, guid: af76bf85c5594304d83612a51d125b90, type: 2}

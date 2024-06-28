@@ -462,7 +462,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 49a2246c4589e4e5889ebef11b0cccfb, type: 3}
+  m_audioClip: {fileID: 8300000, guid: d1f1e3373b91c4898b0a3871a475af41, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -579,7 +579,7 @@ Transform:
   m_Children:
   - {fileID: 365366152}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8477026163705850792
 MonoBehaviour:
@@ -593,7 +593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cdb7711cd027422da5b8976ca3215e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questionsCSV: {fileID: 4900000, guid: 589ca81ad18424f16abf9a4e5e1edd78, type: 3}
+  questionsCSV: {fileID: 4900000, guid: 4c39812a1014342ccac950cee1bb3e61, type: 3}
   resultCamera: {fileID: 0}
   displayRoot: {fileID: 0}
   welcomeDisplayPrefab: {fileID: 920522400820447016, guid: e67d4159251064a2c91c7ea56f4ca4c4, type: 3}
@@ -603,10 +603,10 @@ MonoBehaviour:
   finalPuzzleDisplayPrefab: {fileID: 949554289530116718, guid: a44804d63a02346d4bcff65527a972c4, type: 3}
   spirits:
   - {fileID: 11400000, guid: a452d073886a24c56934276f58a6b5cc, type: 2}
-  - {fileID: 11400000, guid: da3d66ae6795a47c89578cba79d3cfb9, type: 2}
-  - {fileID: 11400000, guid: 37eafc6e5d93b4044b1cb35b6ababab5, type: 2}
-  - {fileID: 11400000, guid: 7f64538d79d1847e1918f7dfe663433c, type: 2}
   - {fileID: 11400000, guid: 330de5be0dc9b4b89bbb9efc037a7ee8, type: 2}
+  - {fileID: 11400000, guid: da3d66ae6795a47c89578cba79d3cfb9, type: 2}
+  - {fileID: 11400000, guid: 7f64538d79d1847e1918f7dfe663433c, type: 2}
+  - {fileID: 11400000, guid: 37eafc6e5d93b4044b1cb35b6ababab5, type: 2}
   slowReveal: 0
   whenIsTheHeartPuzzle: 5
   finalPuzzleCompleteTime: 10
@@ -658,7 +658,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 49a2246c4589e4e5889ebef11b0cccfb, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 25227ba9ea2a9434bb9091c0dd7c6420, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

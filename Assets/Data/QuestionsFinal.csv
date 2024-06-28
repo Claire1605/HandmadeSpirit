@@ -1,0 +1,10 @@
+Your demon comes across a crossroad in the forest. One road leads towards home; one road leads towards adventure.,Home,Adventure,Go between,0,2,1,-1,-1,-2,-1,0,2,0,0,0,0,0,4
+Your demon is handed an eyeball - they know who it belongs to. If they take it - they will be able to see the the 4th colour.,Take it,Return it,What do you mean... 4th colour?,2,-1,0,0,0,0,0,0,0,0,0,2,0,-3,1
+Which dominion would your demon rule over?,Heaven,Earth,Hell,-1,-1,0,0,0,0,1,0,1,1,2,0,0,0,1
+Your demon could grant you the knowledge of a specfici field. What would you like to master?,Philosophy,Science,Art,0,0,0,0,3,0,0,3,0,0,0,3,0,-1,0
+Your demon feels a mysterious hand on your shoulder.  You know it is a monsterous prescence. What would they do?,Face the monster,Run away,Melt into the living room floor,-4,0,3,0,0,2,1,-3,0,0,2,2,-4,-1,2
+Your demon is trapped in a coffin. Which animal would they transform into to escape?,Mouse,Giraffe,Dolphin,0,1,-2,-3,0,0,1,1,1,1,-1,-3,-2,-4,1
+Your demon is sailing out to sea to venture to uncharted territory. What would they head for on the horizon?,Island,Cyclone,Cyclops,1,0,0,0,-3,0,-2,0,0,-2,-1,-3,1,-3,-2
+Would your demon reign over dreams or nightmares?,Dreams,Nightmares,...My demon never sleeps.,0,1,0,-2,0,0,0,0,2,0,1,2,-2,1,1
+Your demon stumbles upon an ancient time machine - to where would they travel?,Past,Future,I don't trust this.,0,1,1,0,1,1,1,-1,1,1,-1,0,-1,-4,-1
+Coffee? Tea? Hot chocolate?,Coffee,Tea,Hot Chocolate,2,2,0,0,-1,0,1,0,2,-1,0,-2,0,0,1

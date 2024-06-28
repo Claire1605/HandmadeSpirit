@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: This heart will do
+  m_text: This heart will do...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: af76bf85c5594304d83612a51d125b90, type: 2}
   m_sharedMaterial: {fileID: 2554988385467168948, guid: af76bf85c5594304d83612a51d125b90, type: 2}
@@ -263,7 +263,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Your Demon needs a heart. Mold one and place in the correctly on the stone.
+  m_text: 'Your Demon needs a heart
+
+
+    Mold one and position it correctly on the
+    ancient ruin'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: af76bf85c5594304d83612a51d125b90, type: 2}
   m_sharedMaterial: {fileID: 2554988385467168948, guid: af76bf85c5594304d83612a51d125b90, type: 2}
