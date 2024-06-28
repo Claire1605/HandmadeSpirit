@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     public QuestionDisplay questionDisplayPrefab;
     public ResultDisplay resultDisplayPrefab;
     public SpiritSO[] spirits;
+    public bool slowReveal = true;
 
     public AudioSource selectionAudio;
     public AudioSource resultAudio;
@@ -189,7 +190,11 @@ public class GameController : MonoBehaviour
                     var spirit = spirits[resultSpiritIndex];
 
                     resultDisplay.ShowResult(spirit);
-                    resultCamera.backgroundColor = spirit.colour;
+                    if (!slowReveal)
+                    {
+                        resultCamera.backgroundColor = spirit.colour;
+                    }
+                  
                     resultAudio.Play();
 
                     nextTransition = float.MaxValue;
