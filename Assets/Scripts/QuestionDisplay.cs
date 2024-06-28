@@ -34,7 +34,7 @@ public class QuestionDisplay : MonoBehaviour
     public Vector2 answer1TextStartPos;
     public Vector2 answer2TextStartPos;
 
-    private void OnEnable()
+    public void Setup()
     {
         answer0TextStartPos = answer0Text.rectTransform.anchoredPosition;
         answer1TextStartPos = answer1Text.rectTransform.anchoredPosition;

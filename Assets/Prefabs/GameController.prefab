@@ -449,7 +449,7 @@ Transform:
   m_Children:
   - {fileID: 365366152}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8477026163705850792
 MonoBehaviour:
@@ -468,12 +468,16 @@ MonoBehaviour:
   displayRoot: {fileID: 0}
   welcomeDisplayPrefab: {fileID: 920522400820447016, guid: e67d4159251064a2c91c7ea56f4ca4c4, type: 3}
   questionDisplayPrefab: {fileID: 8341265958303962823, guid: fda1a4d9884074b3eaf7a928640f30bf, type: 3}
+  heartPuzzleDisplayPrefab: {fileID: 8918689633281557544, guid: 36d91caf4d8c8490f99646f9f72f0fab, type: 3}
   resultDisplayPrefab: {fileID: -7253821216454333526, guid: 97babb35f69bd497b8108b1b9f0cb707, type: 3}
+  finalPuzzleDisplayPrefab: {fileID: 949554289530116718, guid: a44804d63a02346d4bcff65527a972c4, type: 3}
   spirits:
   - {fileID: 11400000, guid: a452d073886a24c56934276f58a6b5cc, type: 2}
   - {fileID: 11400000, guid: da3d66ae6795a47c89578cba79d3cfb9, type: 2}
   - {fileID: 11400000, guid: 37eafc6e5d93b4044b1cb35b6ababab5, type: 2}
   - {fileID: 11400000, guid: 7f64538d79d1847e1918f7dfe663433c, type: 2}
   - {fileID: 11400000, guid: 330de5be0dc9b4b89bbb9efc037a7ee8, type: 2}
+  slowReveal: 1
+  whenIsTheHeartPuzzle: 5
   selectionAudio: {fileID: 44567555}
   resultAudio: {fileID: 526990253}

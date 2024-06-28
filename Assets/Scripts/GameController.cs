@@ -10,9 +10,12 @@ public class GameController : MonoBehaviour
     public Transform displayRoot;
     public Transform welcomeDisplayPrefab;
     public QuestionDisplay questionDisplayPrefab;
+    public HeartPuzzleDisplay heartPuzzleDisplayPrefab;
     public ResultDisplay resultDisplayPrefab;
+    public FinalPuzzleDisplay finalPuzzleDisplayPrefab;
     public SpiritSO[] spirits;
     public bool slowReveal = true;
+    public int whenIsTheHeartPuzzle = 5;
 
     public AudioSource selectionAudio;
     public AudioSource resultAudio;
@@ -20,17 +23,22 @@ public class GameController : MonoBehaviour
     private Transform welcomeDisplay;
     private List<Question> questions;
     private QuestionDisplay questionDisplay;
+    private HeartPuzzleDisplay heartPuzzleDisplay;
     private ResultDisplay resultDisplay;
+    private FinalPuzzleDisplay finalPuzzleDisplay;
 
     private enum State
     {
         ShowingWelcome,
         ShowingQuestion,
         ShowingAnswer,
+        ShowingHeartPuzzle,
+        ShowingHeartPuzzleSolved,
+        ShowingFinalPuzzle,
         ShowingResult,
     }
 
-    private int curQuestion = -1;
+    private int curQuestion = 0;
     private State curState = State.ShowingWelcome;
     private int questionAnswer = -1;
 
@@ -51,7 +59,14 @@ public class GameController : MonoBehaviour
         welcomeDisplay.gameObject.SetActive(true);
 
         questionDisplay = Instantiate(questionDisplayPrefab, displayRoot);
+        questionDisplay.Setup();
         questionDisplay.gameObject.SetActive(false);
+
+        heartPuzzleDisplay = Instantiate(heartPuzzleDisplayPrefab, displayRoot);
+        heartPuzzleDisplay.gameObject.SetActive(false);
+
+        finalPuzzleDisplay = Instantiate(finalPuzzleDisplayPrefab, displayRoot);
+        finalPuzzleDisplay.gameObject.SetActive(false);
 
         resultDisplay = Instantiate(resultDisplayPrefab, displayRoot);
         resultDisplay.gameObject.SetActive(false);
@@ -100,7 +115,20 @@ public class GameController : MonoBehaviour
                     forceTransition = true;
                     UpdateResult();
                     Debug.Log(string.Join(", ", result));
-                    selectionAudio.Play();
+                }
+            }
+            else if (curState == State.ShowingHeartPuzzle)
+            {
+                if (UserInput.Instance.NavigationInput.y > 0)
+                {
+                    forceTransition = true;
+                }
+            }
+            else if (curState == State.ShowingFinalPuzzle)
+            {
+                if (UserInput.Instance.InteractJustPressed)
+                {
+                    forceTransition = true;
                 }
             }
         }
@@ -159,66 +187,120 @@ public class GameController : MonoBehaviour
         switch (curState)
         {
             case State.ShowingWelcome:
-            {
                 welcomeDisplay.gameObject.SetActive(false);
-                questionDisplay.gameObject.SetActive(true);
-
-                curState = State.ShowingQuestion;
-                questionAnswer = -1;
-                ++curQuestion;
-                questionDisplay.ShowQuestion(questions[curQuestion]);
-                nextTransition = float.MaxValue;
-                blockInputUntil = Time.time + 3.5f;
-            }
-            break;
+                ShowQuestion();
+                break;
 
             case State.ShowingQuestion:
-            {
-                curState = State.ShowingAnswer;
-                questionDisplay.ShowAnswer(questionAnswer);
-                nextTransition = Time.time + 4;
-            }
-            break;
+                 ShowAnswer();
+                break;
 
             case State.ShowingAnswer:
-            {
-                if (curQuestion < questions.Count - 1)
+                curQuestion++;
+                if (curQuestion == whenIsTheHeartPuzzle)
                 {
-                    curState = State.ShowingQuestion;
-                    questionAnswer = -1;
-                    ++curQuestion;
-                    questionDisplay.ShowQuestion(questions[curQuestion]);
-                    nextTransition = float.MaxValue;
-                    blockInputUntil = Time.time + 3.5f;
+                    questionDisplay.gameObject.SetActive(false);
+                    ShowHeartPuzzle();
+                }
+                else if (curQuestion < questions.Count)
+                {
+                    ShowQuestion();
                 }
                 else
                 {
-                    curState = State.ShowingResult;
-                    questionDisplay.gameObject.SetActive(false);
-                    resultDisplay.gameObject.SetActive(true);
-
-                    // This is not efficient... but it will work
-                    var resultSpiritIndex = result.ToList().IndexOf(result.Max());
-                    var spirit = spirits[resultSpiritIndex];
-
-                    resultDisplay.ShowResult(spirit);
-                    if (!slowReveal)
-                    {
-                        resultCamera.backgroundColor = spirit.colour;
-                    }
-                  
-                    resultAudio.Play();
-
-                    nextTransition = float.MaxValue;
+                    ShowFinalPuzzle();
                 }
-            }
-            break;
+                break;
+
+            case State.ShowingHeartPuzzle:
+                ShowHeartPuzzleSloved();
+                break;
+
+            case State.ShowingHeartPuzzleSolved:
+                heartPuzzleDisplay.gameObject.SetActive(false);
+                if (curQuestion < questions.Count)
+                {
+                    ShowQuestion();
+                }
+                else
+                {
+                    ShowFinalPuzzle();
+                }
+                break;
+
+            case State.ShowingFinalPuzzle:
+                finalPuzzleDisplay.gameObject.SetActive(false);
+                ShowResult();
+                break;
 
             case State.ShowingResult:
-            {
-
-            }
-            break;
+                // do nothing...
+                break;
         }
+    }
+
+    private void ShowQuestion()
+    {
+        questionDisplay.gameObject.SetActive(true);
+
+        curState = State.ShowingQuestion;
+        questionAnswer = -1;
+        questionDisplay.ShowQuestion(questions[curQuestion]);
+        nextTransition = float.MaxValue;
+        blockInputUntil = Time.time + 3.5f;
+    }
+
+    private void ShowAnswer()
+    {
+        curState = State.ShowingAnswer;
+        questionDisplay.ShowAnswer(questionAnswer);
+        nextTransition = Time.time + 4;
+        selectionAudio.Play();
+    }
+
+    private void ShowHeartPuzzle()
+    {
+        heartPuzzleDisplay.gameObject.SetActive(true);
+
+        curState = State.ShowingHeartPuzzle;
+        heartPuzzleDisplay.ShowPrompt();
+        nextTransition = float.MaxValue;
+        blockInputUntil = Time.time + 1.5f;
+    }
+
+    private void ShowHeartPuzzleSloved()
+    {
+        curState = State.ShowingHeartPuzzleSolved;
+        heartPuzzleDisplay.ShowSolved();
+        nextTransition = Time.time + 3;
+        //heartAudio.Play();
+    }
+
+    private void ShowFinalPuzzle()
+    {
+        finalPuzzleDisplay.gameObject.SetActive(true);
+        curState = State.ShowingFinalPuzzle;
+        nextTransition = float.MaxValue;
+    }
+
+    private void ShowResult()
+    {
+        resultDisplay.gameObject.SetActive(true);
+
+        curState = State.ShowingResult;
+
+        // This is not efficient... but it will work
+        var resultSpiritIndex = result.ToList().IndexOf(result.Max());
+        var spirit = spirits[resultSpiritIndex];
+
+        resultDisplay.ShowResult(spirit);
+        if (!slowReveal)
+        {
+            resultCamera.backgroundColor = spirit.colour;
+        }
+
+        resultAudio.Play();
+
+        nextTransition = float.MaxValue;
     }
 }
