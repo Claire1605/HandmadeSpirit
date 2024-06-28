@@ -120,6 +120,24 @@ public class GameController : MonoBehaviour
         {
             result[i] += answerResult[i];
         }
+
+        //Update colour
+        int highScore = -100;
+        int leadSpirit = 0;
+        for (int i = 0; i < 5; i++)
+        {
+            if (result[i] > highScore)
+            {
+                highScore = result[i];
+                leadSpirit = i;
+            }
+        }
+
+        Color c = spirits[leadSpirit].colour;
+        float qProgress = (float)(curQuestion + 1) / questions.Count;
+
+        questionDisplay.oldColour = resultCamera.backgroundColor;
+        questionDisplay.newColour = new Color(c.r * qProgress, c.g * qProgress, c.b * qProgress, 1);
     }
 
     private void DoTransition()
