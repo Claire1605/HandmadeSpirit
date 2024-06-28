@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856b1dea744894d3ea5ea3dc54c0add8, type: 3}
   m_Name: TestSpirit 1
   m_EditorClassIdentifier: 
-  spiritName: name 1
+  spiritName: Furcas
   image: {fileID: 21300000, guid: df834599f393640c99eb595411d6b5c9, type: 3}
   colour: {r: 1, g: 0, b: 0, a: 1}
