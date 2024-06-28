@@ -14,6 +14,7 @@ public class QuestionDisplay : MonoBehaviour
     public Color oldColour;
     public Color newColour;
     private Camera resultCamera;
+    private GameController gameController;
 
     private TMPro.TextMeshProUGUI AnswerText
     {
@@ -38,7 +39,8 @@ public class QuestionDisplay : MonoBehaviour
         answer0TextStartPos = answer0Text.rectTransform.anchoredPosition;
         answer1TextStartPos = answer1Text.rectTransform.anchoredPosition;
         answer2TextStartPos = answer2Text.rectTransform.anchoredPosition;
-        resultCamera = FindObjectOfType<GameController>().resultCamera; //Sorry about this code, just trying to get it to work quickly!
+        gameController = FindObjectOfType<GameController>();
+        resultCamera = gameController.resultCamera; //Sorry about this code, just trying to get it to work quickly!
     }
 
     public void ShowQuestion(Question question)
@@ -112,7 +114,9 @@ public class QuestionDisplay : MonoBehaviour
     private IEnumerator ShowAnswerCo()
     {
         Vector2 startPos = AnswerText.rectTransform.anchoredPosition;
-        
+        bool slowReveal = gameController.slowReveal;
+
+
         float t = 0f;
         while (t < 1f)
         {
@@ -126,7 +130,11 @@ public class QuestionDisplay : MonoBehaviour
             if (answer != 2) answer2Text.alpha = alpha;
 
             AnswerText.rectTransform.anchoredPosition = Vector2.Lerp(startPos, givenAnswerPosition, t);
-            resultCamera.backgroundColor = Color.Lerp(oldColour, newColour, t);
+
+            if (slowReveal)
+            {
+                resultCamera.backgroundColor = Color.Lerp(oldColour, newColour, t);
+            }
 
             yield return null;
         }

@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     public QuestionDisplay questionDisplayPrefab;
     public ResultDisplay resultDisplayPrefab;
     public SpiritSO[] spirits;
+    public bool slowReveal = true;
 
     private Transform welcomeDisplay;
     private List<Question> questions;
@@ -182,7 +183,11 @@ public class GameController : MonoBehaviour
                     var spirit = spirits[resultSpiritIndex];
 
                     resultDisplay.ShowResult(spirit);
-                    //resultCamera.backgroundColor = spirit.colour;
+
+                    if (!slowReveal)
+                    {
+                        resultCamera.backgroundColor = spirit.colour;
+                    }
 
                     nextTransition = float.MaxValue;
                 }
