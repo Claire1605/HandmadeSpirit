@@ -16,8 +16,14 @@ public class GameController : MonoBehaviour
     public SpiritSO[] spirits;
     public bool slowReveal = true;
     public int whenIsTheHeartPuzzle = 5;
+    public float finalPuzzleCompleteTime = 10;
+
+    public bool DEBUG_startWithHeartPuzzle = false;
+    public bool DEBUG_startWithFinalPuzzle = false;
 
     public AudioSource selectionAudio;
+    public AudioSource heartAudio;
+    public AudioSource finalPuzzleAudio;
     public AudioSource resultAudio;
 
     private Transform welcomeDisplay;
@@ -44,6 +50,8 @@ public class GameController : MonoBehaviour
 
     private float nextTransition = float.MaxValue;
     private float blockInputUntil = float.MinValue;
+
+    private float finalPuzzleTime;
 
     private int[] result = new int[QuestionHelper.NUMBER_OF_SPRITS];
 
@@ -122,13 +130,24 @@ public class GameController : MonoBehaviour
                 if (UserInput.Instance.NavigationInput.y > 0)
                 {
                     forceTransition = true;
+                    heartAudio.Play();
                 }
             }
             else if (curState == State.ShowingFinalPuzzle)
             {
-                if (UserInput.Instance.InteractJustPressed)
+                if (UserInput.Instance.InteractBeingHeld)
                 {
-                    forceTransition = true;
+                    if (!finalPuzzleAudio.isPlaying)
+                        finalPuzzleAudio.Play();
+
+                    finalPuzzleTime += Time.deltaTime;
+                    if (finalPuzzleTime >= finalPuzzleCompleteTime)
+                        forceTransition = true;
+                }
+                else
+                {
+                    finalPuzzleTime = 0;
+                    finalPuzzleAudio.Stop();
                 }
             }
         }
@@ -188,6 +207,19 @@ public class GameController : MonoBehaviour
         {
             case State.ShowingWelcome:
                 welcomeDisplay.gameObject.SetActive(false);
+
+                if (DEBUG_startWithFinalPuzzle)
+                {
+                    ShowFinalPuzzle();
+                    break;
+                }
+
+                if (DEBUG_startWithHeartPuzzle)
+                {
+                    ShowHeartPuzzle();
+                    break;
+                }
+
                 ShowQuestion();
                 break;
 
@@ -208,6 +240,7 @@ public class GameController : MonoBehaviour
                 }
                 else
                 {
+                    questionDisplay.gameObject.SetActive(false);
                     ShowFinalPuzzle();
                 }
                 break;
