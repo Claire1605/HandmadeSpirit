@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spiritName: Bael
   image: {fileID: 21300000, guid: e5862739a5bf643ac8f6ad84cc493af2, type: 3}
-  colour: {r: 1, g: 0, b: 0, a: 1}
+  colour: {r: 0.84955835, g: 0, b: 1, a: 1}
