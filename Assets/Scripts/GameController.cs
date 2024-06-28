@@ -27,6 +27,8 @@ public class GameController : MonoBehaviour
 
     private float nextTransition = 5.0f;
 
+    private int[] result = new int[QuestionHelper.NUMBER_OF_SPRITS];
+
     private void Start()
     {
         questions = QuestionHelper.GetQuestionsFromCSV(questionsCSV);
@@ -40,6 +42,11 @@ public class GameController : MonoBehaviour
 
         questionDisplay = Instantiate(questionDisplayPrefab, displayRoot);
         questionDisplay.gameObject.SetActive(false);
+
+        for (int i = 0; i < QuestionHelper.NUMBER_OF_SPRITS; ++i)
+        {
+            result[i] = 0;
+        }
     }
 
     private void Update()
@@ -63,15 +70,43 @@ public class GameController : MonoBehaviour
                 questionAnswer = 2;
             }
 
+            // If we have recieved an answer
             if (questionAnswer != -1)
             {
                 forceTransition = true;
+                UpdateResult();
+                Debug.Log(string.Join(", ", result));
             }
         }
 
         if (forceTransition || nextTransition <= Time.time)
         {
             DoTransition();
+        }
+    }
+
+    private void UpdateResult()
+    {
+        int[] answerResult = null;
+        if (questionAnswer == 0)
+        {
+            answerResult = questions[curQuestion].answer0Result;
+        }
+        else if (questionAnswer == 1)
+        {
+            answerResult = questions[curQuestion].answer1Result;
+        }
+        else if (questionAnswer == 2)
+        {
+            answerResult = questions[curQuestion].answer2Result;
+        }
+
+        if (result == null)
+            return;
+
+        for (int i = 0; i < QuestionHelper.NUMBER_OF_SPRITS; ++i)
+        {
+            result[i] += answerResult[i];
         }
     }
 
