@@ -292,6 +292,10 @@ PrefabInstance:
       propertyPath: questionRoot
       value: 
       objectReference: {fileID: 1361018874}
+    - target: {fileID: 8477026163705850792, guid: f33e728e8125449a48e719a7a4a25e22, type: 3}
+      propertyPath: resultCamera
+      value: 
+      objectReference: {fileID: 1751471661}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: f33e728e8125449a48e719a7a4a25e22, type: 3}
@@ -442,7 +446,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 541126028}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19ff70bf849ae3d468a1737806485bb0, type: 3}
   m_Name: 
@@ -1299,7 +1303,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1751471662}
   - component: {fileID: 1751471661}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main Camera-Display2
   m_TagString: MainCamera
   m_Icon: {fileID: 0}

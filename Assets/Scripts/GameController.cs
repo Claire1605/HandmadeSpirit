@@ -1,17 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
     public TextAsset questionsCSV;
+    public Camera resultCamera;
     public Transform displayRoot;
     public Transform welcomeDisplayPrefab;
     public QuestionDisplay questionDisplayPrefab;
+    public ResultDisplay resultDisplayPrefab;
+    public SpiritSO[] spirits;
 
     private Transform welcomeDisplay;
     private List<Question> questions;
     private QuestionDisplay questionDisplay;
+    private ResultDisplay resultDisplay;
 
     private enum State
     {
@@ -42,6 +47,9 @@ public class GameController : MonoBehaviour
 
         questionDisplay = Instantiate(questionDisplayPrefab, displayRoot);
         questionDisplay.gameObject.SetActive(false);
+
+        resultDisplay = Instantiate(resultDisplayPrefab, displayRoot);
+        resultDisplay.gameObject.SetActive(false);
 
         for (int i = 0; i < QuestionHelper.NUMBER_OF_SPRITS; ++i)
         {
@@ -149,6 +157,15 @@ public class GameController : MonoBehaviour
                 {
                     curState = State.ShowingResult;
                     questionDisplay.gameObject.SetActive(false);
+                    resultDisplay.gameObject.SetActive(true);
+
+                    // This is not efficient... but it will work
+                    var resultSpiritIndex = result.ToList().IndexOf(result.Max());
+                    var spirit = spirits[resultSpiritIndex];
+
+                    resultDisplay.ShowResult(spirit);
+                    resultCamera.backgroundColor = spirit.colour;
+
                     nextTransition = float.MaxValue;
                 }
             }
@@ -156,7 +173,7 @@ public class GameController : MonoBehaviour
 
             case State.ShowingResult:
             {
-                // Do nothing...
+
             }
             break;
         }
