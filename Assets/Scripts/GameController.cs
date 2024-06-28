@@ -34,6 +34,7 @@ public class GameController : MonoBehaviour
     private int questionAnswer = -1;
 
     private float nextTransition = 5.0f;
+    private float blockInputUntil = float.MinValue;
 
     private int[] result = new int[QuestionHelper.NUMBER_OF_SPRITS];
 
@@ -63,7 +64,7 @@ public class GameController : MonoBehaviour
     private void Update()
     {
         bool forceTransition = false;
-        if (curState == State.ShowingQuestion)
+        if (blockInputUntil < Time.time && curState == State.ShowingQuestion)
         {
             // Left Arrow
             if (UserInput.Instance.NavigationInput.x < 0)
@@ -154,6 +155,7 @@ public class GameController : MonoBehaviour
                 ++curQuestion;
                 questionDisplay.ShowQuestion(questions[curQuestion]);
                 nextTransition = float.MaxValue;
+                blockInputUntil = Time.time + 3.5f;
             }
             break;
 
@@ -174,6 +176,7 @@ public class GameController : MonoBehaviour
                     ++curQuestion;
                     questionDisplay.ShowQuestion(questions[curQuestion]);
                     nextTransition = float.MaxValue;
+                    blockInputUntil = Time.time + 3.5f;
                 }
                 else
                 {
