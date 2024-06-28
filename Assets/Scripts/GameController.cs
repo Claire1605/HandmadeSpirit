@@ -47,15 +47,18 @@ public class GameController : MonoBehaviour
         bool forceTransition = false;
         if (curState == State.ShowingQuestion)
         {
-            if (UserInput.Instance.NavigationInput.x > 0)
+            // Left Arrow
+            if (UserInput.Instance.NavigationInput.x < 0)
             {
                 questionAnswer = 0;
             }
-            else if (UserInput.Instance.NavigationInput.x < 0)
+            // Up Arrow
+            else if (UserInput.Instance.NavigationInput.y > 0)
             {
                 questionAnswer = 1;
             }
-            else if (UserInput.Instance.NavigationInput.y > 0)
+            // Right Arrow
+            else if (UserInput.Instance.NavigationInput.x > 0)
             {
                 questionAnswer = 2;
             }

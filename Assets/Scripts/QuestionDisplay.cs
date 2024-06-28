@@ -24,16 +24,30 @@ public class QuestionDisplay : MonoBehaviour
         }
     }
 
-    public int answer = -1;
+    private int answer = -1;
+    public Vector2 answer0TextStartPos;
+    public Vector2 answer1TextStartPos;
+    public Vector2 answer2TextStartPos;
+
+    private void OnEnable()
+    {
+        answer0TextStartPos = answer0Text.rectTransform.anchoredPosition;
+        answer1TextStartPos = answer1Text.rectTransform.anchoredPosition;
+        answer2TextStartPos = answer2Text.rectTransform.anchoredPosition;
+    }
 
     public void ShowQuestion(Question question)
     {
+        answer0Text.rectTransform.anchoredPosition = answer0TextStartPos;
+        answer1Text.rectTransform.anchoredPosition = answer1TextStartPos;
+        answer2Text.rectTransform.anchoredPosition = answer2TextStartPos;
+
         questionText.text = question.questionText;
         answer0Text.text = question.answer0;
         answer1Text.text = question.answer1;
         answer2Text.text = question.answer2;
 
-        answer0Text.gameObject.SetActive(false);
+        questionText.gameObject.SetActive(false);
         answer0Text.gameObject.SetActive(false);
         answer1Text.gameObject.SetActive(false);
         answer2Text.gameObject.SetActive(false);
@@ -48,7 +62,7 @@ public class QuestionDisplay : MonoBehaviour
         StartCoroutine(ShowAnswerCo());
     }
 
-    IEnumerator ShowQuestionCo()
+    private IEnumerator ShowQuestionCo()
     {
         questionText.gameObject.SetActive(true);
 
@@ -90,7 +104,7 @@ public class QuestionDisplay : MonoBehaviour
         }
     }
 
-    IEnumerator ShowAnswerCo()
+    private IEnumerator ShowAnswerCo()
     {
         Vector2 startPos = AnswerText.rectTransform.anchoredPosition;
 
