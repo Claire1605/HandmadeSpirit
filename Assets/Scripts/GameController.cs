@@ -14,6 +14,9 @@ public class GameController : MonoBehaviour
     public SpiritSO[] spirits;
     public bool slowReveal = true;
 
+    public AudioSource selectionAudio;
+    public AudioSource resultAudio;
+
     private Transform welcomeDisplay;
     private List<Question> questions;
     private QuestionDisplay questionDisplay;
@@ -85,6 +88,7 @@ public class GameController : MonoBehaviour
                 forceTransition = true;
                 UpdateResult();
                 Debug.Log(string.Join(", ", result));
+                selectionAudio.Play();
             }
         }
 
@@ -183,11 +187,12 @@ public class GameController : MonoBehaviour
                     var spirit = spirits[resultSpiritIndex];
 
                     resultDisplay.ShowResult(spirit);
-
                     if (!slowReveal)
                     {
                         resultCamera.backgroundColor = spirit.colour;
                     }
+                  
+                    resultAudio.Play();
 
                     nextTransition = float.MaxValue;
                 }
