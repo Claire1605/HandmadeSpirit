@@ -13,6 +13,9 @@ public class GameController : MonoBehaviour
     public ResultDisplay resultDisplayPrefab;
     public SpiritSO[] spirits;
 
+    public AudioSource selectionAudio;
+    public AudioSource resultAudio;
+
     private Transform welcomeDisplay;
     private List<Question> questions;
     private QuestionDisplay questionDisplay;
@@ -84,6 +87,7 @@ public class GameController : MonoBehaviour
                 forceTransition = true;
                 UpdateResult();
                 Debug.Log(string.Join(", ", result));
+                selectionAudio.Play();
             }
         }
 
@@ -165,6 +169,7 @@ public class GameController : MonoBehaviour
 
                     resultDisplay.ShowResult(spirit);
                     resultCamera.backgroundColor = spirit.colour;
+                    resultAudio.Play();
 
                     nextTransition = float.MaxValue;
                 }
