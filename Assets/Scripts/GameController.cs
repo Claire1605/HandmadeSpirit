@@ -17,9 +17,11 @@ public class GameController : MonoBehaviour
     public bool slowReveal = true;
     public int whenIsTheHeartPuzzle = 5;
     public float finalPuzzleCompleteTime = 10;
+    public float showResultShowTime = 6;
 
     public bool DEBUG_startWithHeartPuzzle = false;
     public bool DEBUG_startWithFinalPuzzle = false;
+    [Range(0, 10.0f)] public float DEBUG_timeScale = 1.0f;
 
     public AudioSource selectionAudio;
     public AudioSource heartAudio;
@@ -42,6 +44,7 @@ public class GameController : MonoBehaviour
         ShowingHeartPuzzleSolved,
         ShowingFinalPuzzle,
         ShowingResult,
+        ShowingRestart,
     }
 
     private int curQuestion = 0;
@@ -51,7 +54,8 @@ public class GameController : MonoBehaviour
     private float nextTransition = float.MaxValue;
     private float blockInputUntil = float.MinValue;
 
-    private float finalPuzzleTime;
+    private float finalPuzzleTimer;
+    private float showResultTimer;
 
     private int[] result = new int[QuestionHelper.NUMBER_OF_SPRITS];
 
@@ -92,6 +96,14 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
+        Time.timeScale = DEBUG_timeScale;
+
+        if (UserInput.Instance.ForcedRestartTriggered)
+        {
+            ResetGame();
+            return;
+        }
+
         bool forceTransition = false;
         if (blockInputUntil < Time.time)
         {
@@ -140,16 +152,29 @@ public class GameController : MonoBehaviour
                     if (!finalPuzzleAudio.isPlaying)
                         finalPuzzleAudio.Play();
 
-                    finalPuzzleTime += Time.deltaTime;
-                    if (finalPuzzleTime >= finalPuzzleCompleteTime)
+                    finalPuzzleTimer += Time.deltaTime;
+                    if (finalPuzzleTimer >= finalPuzzleCompleteTime)
                         forceTransition = true;
                 }
                 else
                 {
                     // TODO(lewis): add grace period...
 
-                    finalPuzzleTime = 0;
+                    finalPuzzleTimer = 0;
                     finalPuzzleAudio.Stop();
+                }
+            }
+            else if (curState == State.ShowingResult)
+            {
+                showResultTimer += Time.deltaTime;
+                if (showResultTimer >= showResultShowTime)
+                    forceTransition = true;
+            }
+            else if (curState == State.ShowingRestart)
+            {
+                if (UserInput.Instance.AnyAnswerTriggered)
+                {
+                    forceTransition = true;
                 }
             }
         }
@@ -201,6 +226,26 @@ public class GameController : MonoBehaviour
 
         questionDisplay.oldColour = resultCamera.backgroundColor;
         questionDisplay.newColour = new Color(c.r * qProgress, c.g * qProgress, c.b * qProgress, 1);
+    }
+
+    private void ResetGame()
+    {
+        curQuestion = 0;
+        curState = State.ShowingWelcome;
+        questionAnswer = -1;
+
+        nextTransition = float.MaxValue;
+        blockInputUntil = float.MinValue;
+
+        result = new int[QuestionHelper.NUMBER_OF_SPRITS];
+        finalPuzzleTimer = 0.0f;
+        showResultTimer = 0.0f;
+
+        welcomeDisplay.gameObject.SetActive(true);
+        questionDisplay.gameObject.SetActive(false);
+        heartPuzzleDisplay.gameObject.SetActive(false);
+        resultDisplay.gameObject.SetActive(false);
+        finalPuzzleDisplay.gameObject.SetActive(false);
     }
 
     private void DoTransition()
@@ -269,7 +314,11 @@ public class GameController : MonoBehaviour
                 break;
 
             case State.ShowingResult:
-                // do nothing...
+                ShowRestart();
+                break;
+
+            case State.ShowingRestart:
+                ResetGame();
                 break;
         }
     }
@@ -337,5 +386,11 @@ public class GameController : MonoBehaviour
         resultAudio.Play();
 
         nextTransition = float.MaxValue;
+    }
+
+    private void ShowRestart()
+    {
+        curState = State.ShowingRestart;
+        resultDisplay.ShowRestartText();
     }
 }
