@@ -97,27 +97,22 @@ public class GameController : MonoBehaviour
         {
             if (curState == State.ShowingWelcome)
             {
-                if (UserInput.Instance.NavigationInput.x < 0 ||
-                    UserInput.Instance.NavigationInput.y < 0 ||
-                    UserInput.Instance.NavigationInput.x > 0)
+                if (UserInput.Instance.AnyAnswerTriggered)
                 {
                     forceTransition = true;
                 }
             }
             else if (curState == State.ShowingQuestion)
             {
-                // Left Arrow
-                if (UserInput.Instance.NavigationInput.x < 0)
+                if (UserInput.Instance.AnswerLeftTriggered)
                 {
                     questionAnswer = 0;
                 }
-                // Down Arrow
-                else if (UserInput.Instance.NavigationInput.y < 0)
+                else if (UserInput.Instance.AnswerCenterTriggered)
                 {
                     questionAnswer = 1;
                 }
-                // Right Arrow
-                else if (UserInput.Instance.NavigationInput.x > 0)
+                else if (UserInput.Instance.AnswerRightTriggered)
                 {
                     questionAnswer = 2;
                 }
@@ -132,7 +127,7 @@ public class GameController : MonoBehaviour
             }
             else if (curState == State.ShowingHeartPuzzle)
             {
-                if (UserInput.Instance.NavigationInput.y > 0)
+                if (UserInput.Instance.HeartPuzzleInputTriggered)
                 {
                     forceTransition = true;
                     heartAudio.Play();
@@ -140,7 +135,7 @@ public class GameController : MonoBehaviour
             }
             else if (curState == State.ShowingFinalPuzzle)
             {
-                if (UserInput.Instance.InteractBeingHeld)
+                if (UserInput.Instance.FinalPuzzleInputBeingHeld)
                 {
                     if (!finalPuzzleAudio.isPlaying)
                         finalPuzzleAudio.Play();
@@ -151,6 +146,8 @@ public class GameController : MonoBehaviour
                 }
                 else
                 {
+                    // TODO(lewis): add grace period...
+
                     finalPuzzleTime = 0;
                     finalPuzzleAudio.Stop();
                 }

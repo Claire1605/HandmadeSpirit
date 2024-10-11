@@ -6,32 +6,34 @@ public class ExampleInput : MonoBehaviour
 {
     void Update()
     {
-        if (UserInput.Instance.NavigationInput.x > 0)
+        if (UserInput.Instance.FinalPuzzleInputBeingHeld)
         {
-            Debug.Log("Right");
+            Debug.Log("Final [held]");
         }
-        else if (UserInput.Instance.NavigationInput.x < 0)
+        
+        if (UserInput.Instance.HeartPuzzleInputTriggered)
+        {
+            Debug.Log("Heart");
+        }
+
+        if (UserInput.Instance.AnswerLeftTriggered)
         {
             Debug.Log("Left");
         }
 
-        if (UserInput.Instance.NavigationInput.y > 0)
+        if (UserInput.Instance.AnswerCenterTriggered)
         {
-            Debug.Log("Up");
-        }
-        else if (UserInput.Instance.NavigationInput.y < 0)
-        {
-            Debug.Log("Down");
+            Debug.Log("Center");
         }
 
-        if (UserInput.Instance.InteractJustPressed)
+        if (UserInput.Instance.AnswerRightTriggered)
         {
-            Debug.Log("Space");
+            Debug.Log("Right");
         }
 
-        if (UserInput.Instance.MouseClick)
+        if (UserInput.Instance.ForcedRestartTriggered)
         {
-            Debug.Log("Click");
+            Debug.Log("Forced restart");
         }
     }
 }

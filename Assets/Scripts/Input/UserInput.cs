@@ -7,16 +7,23 @@ public class UserInput : MonoBehaviour
 {
     public static UserInput Instance;
 
-    public Vector2 NavigationInput { get; private set; }
-    public bool InteractJustPressed { get; private set;}
-    public bool InteractBeingHeld { get; private set; }
-    public bool InteractReleased { get; private set; }
-    public bool MouseClick { get; private set; }
+    public bool FinalPuzzleInputBeingHeld => _finalPuzzleInput.IsPressed();
+    public bool HeartPuzzleInputTriggered => _heartPuzzleInput.triggered;
+    public bool AnswerLeftTriggered => _answerLeft.triggered;
+    public bool AnswerCenterTriggered => _answerCenter.triggered;
+    public bool AnswerRightTriggered => _answerRight.triggered;
+    public bool ForcedRestartTriggered => _forcedReset.triggered;
+
+    public bool AnyAnswerTriggered { get { return AnswerLeftTriggered || AnswerCenterTriggered || AnswerRightTriggered; } }
 
     private PlayerInput _playerInput;
 
-    private InputAction _navigationAction;
-    private InputAction _interactAction;
+    private InputAction _finalPuzzleInput;
+    private InputAction _heartPuzzleInput;
+    private InputAction _answerLeft;
+    private InputAction _answerCenter;
+    private InputAction _answerRight;
+    private InputAction _forcedReset;
 
     //Input Manager
     public static bool isPaused = false;
@@ -37,23 +44,13 @@ public class UserInput : MonoBehaviour
         SetupInputActions();
     }
 
-    void Update()
-    {
-        UpdateInputs();
-    }
-
     private void SetupInputActions()
     {
-        _navigationAction = _playerInput.actions["MOVEMENT"];
-        _interactAction = _playerInput.actions["INTERACT"];
-    }
-
-    private void UpdateInputs()
-    {
-        NavigationInput = _navigationAction.ReadValue<Vector2>();
-        InteractJustPressed = _interactAction.WasPressedThisFrame();
-        InteractBeingHeld = _interactAction.IsPressed();
-        InteractReleased = _interactAction.WasReleasedThisFrame();
-        MouseClick = Mouse.current.leftButton.wasPressedThisFrame;
+        _finalPuzzleInput = _playerInput.actions["FinalPuzzleInput"];
+        _heartPuzzleInput = _playerInput.actions["HeartPuzzleInput"];
+        _answerRight = _playerInput.actions["AnswerRight"];
+        _answerCenter = _playerInput.actions["AnswerCenter"];
+        _answerLeft = _playerInput.actions["AnswerLeft"];
+        _forcedReset = _playerInput.actions["ForcedReset"];
     }
 }
