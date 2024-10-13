@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    public TextAsset questionsCSV;
+    public List<TextAsset> questionsCSVs;
     public Camera resultCamera;
     public Transform displayRoot;
     public Transform welcomeDisplayPrefab;
@@ -29,7 +29,9 @@ public class GameController : MonoBehaviour
     public AudioSource resultAudio;
 
     private Transform welcomeDisplay;
-    private List<Question> questions;
+    private List<List<Question>> allQuestionsLists = new();
+    private int activeQuestionListIndex;
+    private List<Question> ActiveQuestionsList { get { return allQuestionsLists[activeQuestionListIndex]; } }
     private QuestionDisplay questionDisplay;
     private HeartPuzzleDisplay heartPuzzleDisplay;
     private ResultDisplay resultDisplay;
@@ -66,11 +68,17 @@ public class GameController : MonoBehaviour
             Display.displays[i].Activate();
         }
 
-        questions = QuestionHelper.GetQuestionsFromCSV(questionsCSV);
-        foreach (var q in questions)
+        foreach (var questionCSV in questionsCSVs)
         {
-            Debug.Log(q.ToString());
+            allQuestionsLists.Add(QuestionHelper.GetQuestionsFromCSV(questionCSV));
+            foreach (var q in allQuestionsLists.Last())
+            {
+                Debug.Log(q.ToString());
+            }
         }
+
+        // NOTE(lewis): random roll starting question set
+        activeQuestionListIndex = Random.Range(0, allQuestionsLists.Count);
 
         welcomeDisplay = Instantiate(welcomeDisplayPrefab, displayRoot);
         welcomeDisplay.gameObject.SetActive(true);
@@ -190,15 +198,15 @@ public class GameController : MonoBehaviour
         int[] answerResult = null;
         if (questionAnswer == 0)
         {
-            answerResult = questions[curQuestion].answer0Result;
+            answerResult = ActiveQuestionsList[curQuestion].answer0Result;
         }
         else if (questionAnswer == 1)
         {
-            answerResult = questions[curQuestion].answer1Result;
+            answerResult = ActiveQuestionsList[curQuestion].answer1Result;
         }
         else if (questionAnswer == 2)
         {
-            answerResult = questions[curQuestion].answer2Result;
+            answerResult = ActiveQuestionsList[curQuestion].answer2Result;
         }
 
         if (result == null)
@@ -222,7 +230,7 @@ public class GameController : MonoBehaviour
         }
 
         Color c = spirits[leadSpirit].colour;
-        float qProgress = (float)(curQuestion + 1) / questions.Count;
+        float qProgress = (float)(curQuestion + 1) / ActiveQuestionsList.Count;
 
         questionDisplay.oldColour = resultCamera.backgroundColor;
         questionDisplay.newColour = new Color(c.r * qProgress, c.g * qProgress, c.b * qProgress, 1);
@@ -233,6 +241,8 @@ public class GameController : MonoBehaviour
         curQuestion = 0;
         curState = State.ShowingWelcome;
         questionAnswer = -1;
+
+        activeQuestionListIndex = (activeQuestionListIndex + 1) % allQuestionsLists.Count;
 
         nextTransition = float.MaxValue;
         blockInputUntil = float.MinValue;
@@ -246,6 +256,10 @@ public class GameController : MonoBehaviour
         heartPuzzleDisplay.gameObject.SetActive(false);
         resultDisplay.gameObject.SetActive(false);
         finalPuzzleDisplay.gameObject.SetActive(false);
+
+        resultCamera.backgroundColor = Color.black;
+
+        heartAudio.Stop();
     }
 
     private void DoTransition()
@@ -281,7 +295,7 @@ public class GameController : MonoBehaviour
                     questionDisplay.gameObject.SetActive(false);
                     ShowHeartPuzzle();
                 }
-                else if (curQuestion < questions.Count)
+                else if (curQuestion < ActiveQuestionsList.Count)
                 {
                     ShowQuestion();
                 }
@@ -298,7 +312,7 @@ public class GameController : MonoBehaviour
 
             case State.ShowingHeartPuzzleSolved:
                 heartPuzzleDisplay.gameObject.SetActive(false);
-                if (curQuestion < questions.Count)
+                if (curQuestion < ActiveQuestionsList.Count)
                 {
                     ShowQuestion();
                 }
@@ -329,7 +343,7 @@ public class GameController : MonoBehaviour
 
         curState = State.ShowingQuestion;
         questionAnswer = -1;
-        questionDisplay.ShowQuestion(questions[curQuestion]);
+        questionDisplay.ShowQuestion(ActiveQuestionsList[curQuestion]);
         nextTransition = float.MaxValue;
         blockInputUntil = Time.time + 3.5f;
     }

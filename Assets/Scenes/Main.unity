@@ -284,10 +284,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameController
       objectReference: {fileID: 0}
-    - target: {fileID: 7397190370189722317, guid: f33e728e8125449a48e719a7a4a25e22, type: 3}
-      propertyPath: Loop
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8477026163705850792, guid: f33e728e8125449a48e719a7a4a25e22, type: 3}
       propertyPath: displayRoot
       value: 
@@ -296,6 +292,10 @@ PrefabInstance:
       propertyPath: resultCamera
       value: 
       objectReference: {fileID: 1751471661}
+    - target: {fileID: 8477026163705850792, guid: f33e728e8125449a48e719a7a4a25e22, type: 3}
+      propertyPath: questionsCSVs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: f33e728e8125449a48e719a7a4a25e22, type: 3}

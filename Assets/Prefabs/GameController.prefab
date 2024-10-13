@@ -593,7 +593,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cdb7711cd027422da5b8976ca3215e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questionsCSV: {fileID: 4900000, guid: 4c39812a1014342ccac950cee1bb3e61, type: 3}
+  questionsCSVs:
+  - {fileID: 4900000, guid: 4c39812a1014342ccac950cee1bb3e61, type: 3}
+  - {fileID: 4900000, guid: 66d5daa4e3dfb4196b6d3e6eb0409b9b, type: 3}
   resultCamera: {fileID: 0}
   displayRoot: {fileID: 0}
   welcomeDisplayPrefab: {fileID: 920522400820447016, guid: e67d4159251064a2c91c7ea56f4ca4c4, type: 3}
@@ -610,8 +612,10 @@ MonoBehaviour:
   slowReveal: 0
   whenIsTheHeartPuzzle: 5
   finalPuzzleCompleteTime: 10
+  showResultShowTime: 6
   DEBUG_startWithHeartPuzzle: 0
   DEBUG_startWithFinalPuzzle: 0
+  DEBUG_timeScale: 1
   selectionAudio: {fileID: 44567555}
   heartAudio: {fileID: 7397190370189722317}
   finalPuzzleAudio: {fileID: 8583514575143340410}
