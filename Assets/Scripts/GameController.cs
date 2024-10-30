@@ -17,6 +17,8 @@ public class GameController : MonoBehaviour
     public bool slowReveal = true;
     public int whenIsTheHeartPuzzle = 5;
     public float finalPuzzleCompleteTime = 10;
+    public float finalPuzzleConnectionBreakGraceTime = 1;
+    public bool useFinalPuzzleConnectionBreakGraceTimer = true;
     public float showResultShowTime = 6;
 
     public bool DEBUG_startWithHeartPuzzle = false;
@@ -57,6 +59,13 @@ public class GameController : MonoBehaviour
     private float blockInputUntil = float.MinValue;
 
     private float finalPuzzleTimer;
+    private float finalPuzzleConnectionBreakGraceTimer;
+    private bool FinalPuzzleGraceTimerActive
+    {
+        get {
+            return useFinalPuzzleConnectionBreakGraceTimer && finalPuzzleConnectionBreakGraceTimer > 0f;
+        }
+    }
     private float showResultTimer;
 
     private int[] result = new int[QuestionHelper.NUMBER_OF_SPRITS];
@@ -155,8 +164,16 @@ public class GameController : MonoBehaviour
             }
             else if (curState == State.ShowingFinalPuzzle)
             {
-                if (UserInput.Instance.FinalPuzzleInputBeingHeld)
+                // NOTE(lewis): use a grace period to catch short gaps in the input
+                if (FinalPuzzleGraceTimerActive)
                 {
+                    finalPuzzleConnectionBreakGraceTimer -= Time.deltaTime;
+                }
+
+                if (UserInput.Instance.FinalPuzzleInputBeingHeld || FinalPuzzleGraceTimerActive)
+                {
+                    finalPuzzleConnectionBreakGraceTimer = finalPuzzleConnectionBreakGraceTime;
+
                     if (!finalPuzzleAudio.isPlaying)
                         finalPuzzleAudio.Play();
 
@@ -166,8 +183,7 @@ public class GameController : MonoBehaviour
                 }
                 else
                 {
-                    // TODO(lewis): add grace period...
-
+                    finalPuzzleConnectionBreakGraceTimer = 0f;
                     finalPuzzleTimer = 0;
                     finalPuzzleAudio.Stop();
                 }
@@ -249,6 +265,7 @@ public class GameController : MonoBehaviour
 
         result = new int[QuestionHelper.NUMBER_OF_SPRITS];
         finalPuzzleTimer = 0.0f;
+        finalPuzzleConnectionBreakGraceTimer = 0.0f;
         showResultTimer = 0.0f;
 
         welcomeDisplay.gameObject.SetActive(true);
