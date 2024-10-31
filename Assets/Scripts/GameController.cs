@@ -3,6 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public class CameraColourFlickerer
+{
+    public Camera camera;
+    public Color colour;
+
+    public float flickerSize = 0.2f;
+    public float flickerRate = 1.0f;
+
+    private float t = 0.0f;
+
+    public void Reset()
+    {
+        camera.backgroundColor = Color.black;
+        t = 0;
+    }
+
+    public void Update()
+    {
+        t += Time.deltaTime * flickerRate;
+        float trunk = t - Mathf.Floor(t);
+
+        if (trunk < flickerSize)
+        {
+            if (camera.backgroundColor != colour) camera.backgroundColor = colour;
+        }
+        else
+        {
+            if (camera.backgroundColor != Color.black) camera.backgroundColor = Color.black;
+        }
+    }
+}
+
 public class GameController : MonoBehaviour
 {
     public List<TextAsset> questionsCSVs;
@@ -19,6 +51,8 @@ public class GameController : MonoBehaviour
     public float finalPuzzleCompleteTime = 10;
     public float finalPuzzleConnectionBreakGraceTime = 1;
     public bool useFinalPuzzleConnectionBreakGraceTimer = true;
+    public float finalPuzzleSlowFlickerRate = 0.6f;
+    public float finalPuzzleFastFlickerRate = 1.5f;
     public float showResultShowTime = 6;
 
     public bool DEBUG_startWithHeartPuzzle = false;
@@ -69,6 +103,7 @@ public class GameController : MonoBehaviour
     private float showResultTimer;
 
     private int[] result = new int[QuestionHelper.NUMBER_OF_SPRITS];
+    CameraColourFlickerer cameraColourFlickerer = new();
 
     private void Start()
     {
@@ -109,6 +144,8 @@ public class GameController : MonoBehaviour
         {
             result[i] = 0;
         }
+
+        cameraColourFlickerer.camera = resultCamera;
     }
 
     private void Update()
@@ -180,12 +217,31 @@ public class GameController : MonoBehaviour
                     finalPuzzleTimer += Time.deltaTime;
                     if (finalPuzzleTimer >= finalPuzzleCompleteTime)
                         forceTransition = true;
+                    
+                    {
+                        var resultSpiritIndex = result.ToList().IndexOf(result.Max());
+                        var spirit = spirits[resultSpiritIndex];
+                        cameraColourFlickerer.colour = spirit.colour;
+                    }
+
+                    float puzzleT = finalPuzzleTimer / finalPuzzleCompleteTime;
+                    float kShowUntilT = 0.9f;
+                    if (puzzleT < kShowUntilT)
+                    {
+                        cameraColourFlickerer.flickerRate = Mathf.Lerp(finalPuzzleSlowFlickerRate, finalPuzzleFastFlickerRate, (puzzleT / kShowUntilT));
+                        cameraColourFlickerer.Update();
+                    }
+                    else
+                    {
+                        cameraColourFlickerer.Reset();
+                    }
                 }
                 else
                 {
                     finalPuzzleConnectionBreakGraceTimer = 0f;
                     finalPuzzleTimer = 0;
                     finalPuzzleAudio.Stop();
+                    cameraColourFlickerer.Reset();
                 }
             }
             else if (curState == State.ShowingResult)
@@ -277,6 +333,7 @@ public class GameController : MonoBehaviour
         resultCamera.backgroundColor = Color.black;
 
         heartAudio.Stop();
+        cameraColourFlickerer.Reset();
     }
 
     private void DoTransition()
